@@ -70,12 +70,21 @@ vector<float> Greedy::algoritmoGreedy() {
         maxValor = vDistancia[0];
 
         for (int i = 1; i < tamN; i++) {
+            bool existe = false; 
             if (vDistancia[i] > maxValor) {
-                numPos = i;
-                maxValor = vDistancia[i];
+                //Comprobamos si está ya elegido
+                for (int j = 0; j < tamM; j++) {
+                    if(i == seleccionadosM[j]){
+                        //No seleccionar
+                        existe = true; 
+                    }
+                }
+                if(!existe){
+                    maxValor = vDistancia[i];
+                    numPos = i; 
+                }
             }
         }
-
 
         //Añadimos a la lista de los seleccionados
         seleccionadosM[i + 1] = numPos;

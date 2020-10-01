@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
     int ncadaIter;
 
     FuncionesAux Faux;
-    Set_random(26532177);
+    Set_random(1);
 
 
     //Cargamos los datos
@@ -69,6 +69,17 @@ int main(int argc, char** argv) {
             cout << seleccionados[i] << ' ';
 
         }
+
+
+        float coste = 0.0;
+        for (int i = 0; i < m-1; i++) {
+            for (int j = i+1; j < m; j++) {
+                coste += matrizDistancias[seleccionados[i]][seleccionados[j]];
+            }
+        }
+
+        cout<<endl; 
+        cout << "Coste: " << coste <<endl; 
 
 
     }
