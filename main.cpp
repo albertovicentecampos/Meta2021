@@ -13,6 +13,7 @@
 
 #include <cstdlib>
 #include "FuncionesAux.h"
+#include "Greedy.h"
 #include <vector>
 
 using namespace std;
@@ -34,6 +35,8 @@ int main(int argc, char** argv) {
     int ncadaIter;
 
     FuncionesAux Faux;
+    Set_random(26532177);
+
 
     //Cargamos los datos
     Faux.cargaParametrizacion(registro, archivos, algoritmos, semillas, numIntentosSinMov, probIntDiv, numEvalFuncionObj, numMaxVecinosVisit, tenenciaTabu);
@@ -48,16 +51,29 @@ int main(int argc, char** argv) {
         Faux.cargaFichero(archivos[i], matrizDistancias, n, m);
 
         cout << n << " " << m << endl;
-        
-//        for(int i = 0 ; i < n; i++){
-//            for(int j = 0; j < n; j++){
-//                cout<<matrizDistancias[i][j]<<' ';
-//            }
-//            cout<<endl; 
-//        }
+
+        //        for(int i = 0 ; i < n; i++){
+        //            for(int j = 0; j < n; j++){
+        //                cout<<matrizDistancias[i][j]<<' ';
+        //            }
+        //            cout<<endl; 
+        //        }
+
+        vector<int> solu;
+        vector<float> seleccionados;
+        Greedy g(n, m, matrizDistancias, solu);
+
+        seleccionados = g.algoritmoGreedy();
+
+        for (int i = 0; i < m; i++) {
+            cout << seleccionados[i] << ' ';
+
+        }
+
+
     }
-    
-    
+
+
 
 
 

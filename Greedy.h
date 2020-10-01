@@ -16,6 +16,7 @@
 
 #include <vector>
 #include "FuncionesAux.h"
+#include "random.h"
 
 using namespace std; 
 
@@ -23,7 +24,7 @@ class Greedy {
 public:
     Greedy(long n, long m, vector<vector<float>> d, vector<int> sol);
     Greedy(const Greedy& orig);
-    void algoritmoGreedy();
+    vector<float> algoritmoGreedy();
     virtual ~Greedy();
 private:
     int tamM;
@@ -34,6 +35,10 @@ private:
     int mayorDistancia; 
     vector<float> vDistancia;
     FuncionesAux aux; 
+    
+    
+    vector<float> seleccionadosM;
+    
 
 };
 
