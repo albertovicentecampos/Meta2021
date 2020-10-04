@@ -1,6 +1,6 @@
 archivos: GKD-c_1_n500_m50.txt
-algoritmos: greedy blocal btabu
-semillas: 0
+algoritmos: greedy
+semillas: 1 2444444 3333332
 numIntentosSinMovimiento: 0
 probIntensificacionDiversificacion: 0
 numEvalFuncionObjetivo: 0

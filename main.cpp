@@ -46,28 +46,33 @@ int main(int argc, char** argv) {
         long n = 0;
         long m = 0;
         float coste = 0.0;
-        
+
         Faux.cargaFichero(archivos[i], matrizDistancias, n, m);
 
-        vector<float> seleccionados;
+        for (int j = 0; j < algoritmos.size(); j++) {
+            for (int k = 0; k < semillas.size(); k++) {
+                Set_random(semillas[k]);
+                if (algoritmos[j] == "greedy") {
+                    
+                    vector<float> seleccionados;
 
-        Greedy g(n, m, matrizDistancias);
-        seleccionados = g.algoritmoGreedy();
+                    Greedy g(n, m, matrizDistancias);
+                    seleccionados = g.algoritmoGreedy();
 
-        Faux.visualizaSeleccionados(seleccionados, m);
-        coste = Faux.coste(matrizDistancias, m, seleccionados);
+                    Faux.visualizaSeleccionados(seleccionados, m);
+                    coste = Faux.coste(matrizDistancias, m, seleccionados);
 
-        cout << endl;
-        cout << "Coste: " << coste << endl;
+                    cout << endl;
+                    cout << "Coste: " << coste << endl;
 
+                } else if (algoritmos[j] == "blocal") {
+
+                } else if (algoritmos[j] == "btabu") {
+
+                }
+            }
+        }
     }
-
-
-
-
-
-
-
 
     return 0;
 }
