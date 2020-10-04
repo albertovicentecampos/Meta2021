@@ -34,6 +34,9 @@ class FuncionesAux {
 public:
     void cargaFichero(string nombre, vector<vector<float>> &matriz, long& n, long& m);
     void cargaParametrizacion(string nombreArchivo, vector<string>& archivos, vector<string>& nombreAlg, vector<int>& numSemilla, int& numIntentosSinMov, float& probIntDiv, int& numEvalFuncionObj, int& numMaxVecinosVisit, int& tenenciaTabu);
+    float coste(vector<vector<float>> matrizDistancias, int m, vector<float> seleccionados);
+    void visualizaMatriz(vector<vector<float>> matrizDistancias, int n);
+    void visualizaSeleccionados(vector<float> seleccionados, int m);
 };
 
 #endif /* FUNCIONESAUX_H */

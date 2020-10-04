@@ -23,17 +23,22 @@ void FuncionesAux::cargaFichero(string nombre, vector<vector<float>> &matriz, lo
 
     fe>>n;
     fe>>m;
-    
+
     getline(fe, linea);
     matriz.resize(n, vector<float>(n));
 
     while (!fe.eof()) {
         float num1 = 0;
         float num2 = 0;
-       
+        float valor = 0.0;
+
         fe>>num1;
         fe>>num2;
         fe >> matriz[num1][num2];
+
+        //        fe>>valor; 
+        //        matriz[num1][num2] = valor; 
+        //        matriz[num2][num1] = valor; 
 
         getline(fe, linea);
     }
@@ -152,5 +157,34 @@ void FuncionesAux::cargaParametrizacion(string nombreArchivo, vector<string>& ar
     ten.erase(ten.begin());
     tenenciaTabu = stof(ten[0].c_str());
 
+}
 
+float FuncionesAux::coste(vector<vector<float>> matrizDistancias, int m, vector<float> seleccionados) {
+    float coste = 0.0;
+    for (int i = 0; i < m - 1; i++) {
+        for (int j = i + 1; j < m; j++) {
+            if (matrizDistancias[seleccionados[i]][seleccionados[j]] == 0) {
+                coste += matrizDistancias[seleccionados[j]][seleccionados[i]];
+            } else {
+                coste += matrizDistancias[seleccionados[i]][seleccionados[j]];
+            }
+        }
+    }
+
+    return coste;
+}
+
+void FuncionesAux::visualizaMatriz(vector<vector<float>> matrizDistancias, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << matrizDistancias[i][j] << ' ';
+        }
+        cout << endl;
+    }
+}
+
+void FuncionesAux::visualizaSeleccionados(vector<float> seleccionados, int m) {
+    for (int i = 0; i < m; i++) {
+        cout << seleccionados[i] << ' ';
+    }
 }
