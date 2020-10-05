@@ -21,7 +21,6 @@ maxValor(0.0),
 numPos(0),
 primerElemento(0) {
     vDistancia.resize(tamN, 0);
-    //seleccionadosM.resize(tamM, -1);
     vN.resize(tamN, 0);
     marcados.resize(tamN, false);
 }
@@ -30,12 +29,7 @@ vector<float> Greedy::algoritmoGreedy() {
 
     primerElemento = Randint(1, tamN);
     seleccionadosM.push_back(numPos);
-    //seleccionadosM[0] = primerElemento;
-
-
-
     marcados[primerElemento] = true;
-
 
     //Calculamos el vector de distancias
     for (int i = 0; i < tamM; i++) {
@@ -44,48 +38,12 @@ vector<float> Greedy::algoritmoGreedy() {
         mayorDistancia();
         //Añadimos a la lista de los seleccionados
         seleccionadosM.push_back(numPos);
-        //seleccionadosM[i + 1] = numPos;
         marcados[numPos] = true;
     }
     return seleccionadosM;
 }
 
-//void Greedy::maxDistancia(){
-//    float maxDis = 0.0;
-//    int pos = -1; 
-//    for(int i = 0; i<tamN; i++){
-//        float disn = calcularDistancia(i);
-//        if(disn>maxDis){
-//            maxDis = disn;
-//            pos = i;
-//        }
-//    }
-//    
-//}
-//
-//float Greedy:: calcularDistancia(int iN){
-//    float distancia = 0.0; 
-//    for(int i = 0; i<tamM; i++){
-//        if(iN<i){
-//            distancia += distancias[iN][i];
-//        }else{
-//            distancia += distancias[i][iN];
-//        }
-//    }
-//    return distancia; 
-//}
-
 void Greedy::calculoDistancias(int i) {
-    //    COMPROBAMOS FILA-COLUMNA Y COLUMNA FILA (ESTO SI TENEMOS LA TRIANGULAR SUPERIOR)
-    //        if (distancias[seleccionadosM[i]][j] == -1) {
-    //            vDistancia[j] += distancias[j][seleccionadosM[i]];
-    //        } else {
-    //            vDistancia[j] += distancias[seleccionadosM[i]][j];
-    //        }
-
-    //ESTO SI TENEMOS TODA LA MATRIZ RELLENA 
-    //    vDistancia[j] += distancias[seleccionadosM[i]][j]; 
-
     for (int j = 0; j < tamN; j++) {
         if (i < j) {
             vDistancia[j] += distancias[i][j];
@@ -93,7 +51,6 @@ void Greedy::calculoDistancias(int i) {
             vDistancia[j] += distancias[j][i];
         }
     }
-
 }
 
 void Greedy::mayorDistancia() {
@@ -101,22 +58,12 @@ void Greedy::mayorDistancia() {
     for (int i = 0; i < tamN; i++) {
         bool existe = false;
         if (vDistancia[i] > maxValor) {
-            //            Comprobamos si está ya elegido
+            //Comprobamos si está ya elegido
             if (marcados[i] == false) {
                 maxValor = vDistancia[i];
                 numPos = i; 
             }
 
-            //            for (int z = 0; z < tamM; z++) {
-            //                if (i == seleccionadosM[z]) {
-            //                    //No seleccionar
-            //                    existe = true;
-            //                }
-            //            }
-            //            if (!existe) {
-            //                maxValor = vDistancia[i];
-            //                numPos = i;
-            //            }
         }
     }
 }

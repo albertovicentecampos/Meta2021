@@ -36,33 +36,9 @@ int main(int argc, char** argv) {
     FuncionesAux Faux;
 
 
-    //Set_random(26532177);
-
     //Cargamos los datos
     Faux.cargaParametrizacion(registro, archivos, algoritmos, semillas, numIntentosSinMov, probIntDiv, numEvalFuncionObj, numMaxVecinosVisit, tenenciaTabu);
-
-//    for (int i = 0; i < archivos.size(); i++) {
-//        vector<vector<float>> matrizDistancias;
-//        int n = 0;
-//        int m = 0;
-//        float coste = 0.0;
-//        
-//        Faux.cargaFichero(archivos[i], matrizDistancias, n, m);
-//
-//        vector<float> seleccionados;
-//
-//        Greedy g(n, m, matrizDistancias);
-//        seleccionados = g.algoritmoGreedy();
-//
-//        Faux.visualizaSeleccionados(seleccionados, m);
-//        coste = Faux.coste(matrizDistancias, m, seleccionados);
-//
-//        cout << endl;
-//        cout << "Coste: " << coste << endl;
-//
-//    }
-    
-    
+  
     for (int i = 0; i < archivos.size(); i++) {
         vector<vector<float>> matrizDistancias;
         int n;
