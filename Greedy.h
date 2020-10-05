@@ -42,6 +42,8 @@ private:
     vector<vector<float>> distancias;
     vector<float> seleccionadosM;
     
+    vector<bool> marcados;
+    
     vector<int> vN;
     
     FuncionesAux aux; 

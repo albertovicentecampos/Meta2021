@@ -21,17 +21,19 @@ maxValor(0.0),
 numPos(0),
 primerElemento(0) {
     vDistancia.resize(tamN, 0);
-    seleccionadosM.resize(tamM, -1);
+    //seleccionadosM.resize(tamM, -1);
     vN.resize(tamN, 0);
+    marcados.resize(tamN, false);
 }
 
 vector<float> Greedy::algoritmoGreedy() {
 
     primerElemento = Randint(1, tamN);
-    seleccionadosM[0] = primerElemento;
+    seleccionadosM.push_back(numPos);
+    //seleccionadosM[0] = primerElemento;
 
-    vector<bool> marcados;
-    marcados.resize(tamN, false);
+
+
     marcados[primerElemento] = true;
 
 
@@ -41,7 +43,9 @@ vector<float> Greedy::algoritmoGreedy() {
         //Seleccionamos el mayor del momento
         mayorDistancia();
         //Añadimos a la lista de los seleccionados
-        seleccionadosM[i + 1] = numPos;
+        seleccionadosM.push_back(numPos);
+        //seleccionadosM[i + 1] = numPos;
+        marcados[numPos] = true;
     }
     return seleccionadosM;
 }
@@ -98,16 +102,21 @@ void Greedy::mayorDistancia() {
         bool existe = false;
         if (vDistancia[i] > maxValor) {
             //            Comprobamos si está ya elegido
-            for (int z = 0; z < tamM; z++) {
-                if (i == seleccionadosM[z]) {
-                    //No seleccionar
-                    existe = true;
-                }
-            }
-            if (!existe) {
+            if (marcados[i] == false) {
                 maxValor = vDistancia[i];
-                numPos = i;
+                numPos = i; 
             }
+
+            //            for (int z = 0; z < tamM; z++) {
+            //                if (i == seleccionadosM[z]) {
+            //                    //No seleccionar
+            //                    existe = true;
+            //                }
+            //            }
+            //            if (!existe) {
+            //                maxValor = vDistancia[i];
+            //                numPos = i;
+            //            }
         }
     }
 }
