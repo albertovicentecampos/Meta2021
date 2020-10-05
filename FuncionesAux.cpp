@@ -11,9 +11,11 @@
  * Created on 23 de septiembre de 2020, 11:44
  */
 
+#include <set>
+
 #include "FuncionesAux.h"
 
-void FuncionesAux::cargaFichero(string nombre, vector<vector<float>> &matriz, long& n, long& m) {
+void FuncionesAux::cargaFichero(string nombre, vector<vector<float>> &matriz, int& n, int& m) {
     string linea;
 
     fstream fe(nombre.c_str(), ios::in);
@@ -36,9 +38,9 @@ void FuncionesAux::cargaFichero(string nombre, vector<vector<float>> &matriz, lo
         fe>>num2;
         fe >> matriz[num1][num2];
 
-        //        fe>>valor; 
-        //        matriz[num1][num2] = valor; 
-        //        matriz[num2][num1] = valor; 
+//        fe>>valor;
+//        matriz[num1][num2] = valor;
+//        matriz[num2][num1] = valor;
 
         getline(fe, linea);
     }
@@ -186,5 +188,11 @@ void FuncionesAux::visualizaMatriz(vector<vector<float>> matrizDistancias, int n
 void FuncionesAux::visualizaSeleccionados(vector<float> seleccionados, int m) {
     for (int i = 0; i < m; i++) {
         cout << seleccionados[i] << ' ';
+    }
+}
+
+void FuncionesAux::rellena(vector<vector<float>> matrizDistancias,int n, set<int>& N){
+    for(int i = 0; i< n; i++){
+        N.insert(i);
     }
 }

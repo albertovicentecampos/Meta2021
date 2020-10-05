@@ -22,13 +22,15 @@ using namespace std;
 
 class Greedy {
 public:
-    Greedy(long n, long m, vector<vector<float>> d);
-    Greedy(const Greedy& orig);
+    Greedy(int n, int m, vector<vector<float>> d);
     vector<float> algoritmoGreedy();
     
-    void calculoDistancias(int i, int j);
+    void calculoDistancias(int i);
     void mayorDistancia();
-    virtual ~Greedy();
+    
+//    void maxDistancia();
+//    void calcularDistancia();
+    
 private:
     int tamM;
     int tamN;   
@@ -39,6 +41,8 @@ private:
     vector<float> vDistancia;
     vector<vector<float>> distancias;
     vector<float> seleccionadosM;
+    
+    vector<int> vN;
     
     FuncionesAux aux; 
 };

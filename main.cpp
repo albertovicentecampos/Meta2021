@@ -36,26 +36,48 @@ int main(int argc, char** argv) {
     FuncionesAux Faux;
 
 
-    Set_random(26532177);
+    //Set_random(26532177);
 
     //Cargamos los datos
     Faux.cargaParametrizacion(registro, archivos, algoritmos, semillas, numIntentosSinMov, probIntDiv, numEvalFuncionObj, numMaxVecinosVisit, tenenciaTabu);
 
+//    for (int i = 0; i < archivos.size(); i++) {
+//        vector<vector<float>> matrizDistancias;
+//        int n = 0;
+//        int m = 0;
+//        float coste = 0.0;
+//        
+//        Faux.cargaFichero(archivos[i], matrizDistancias, n, m);
+//
+//        vector<float> seleccionados;
+//
+//        Greedy g(n, m, matrizDistancias);
+//        seleccionados = g.algoritmoGreedy();
+//
+//        Faux.visualizaSeleccionados(seleccionados, m);
+//        coste = Faux.coste(matrizDistancias, m, seleccionados);
+//
+//        cout << endl;
+//        cout << "Coste: " << coste << endl;
+//
+//    }
+    
+    
     for (int i = 0; i < archivos.size(); i++) {
         vector<vector<float>> matrizDistancias;
-        long n = 0;
-        long m = 0;
-        float coste = 0.0;
-
+        int n;
+        int m;
         Faux.cargaFichero(archivos[i], matrizDistancias, n, m);
 
+        //Faux.visualizaMatriz(matrizDistancias, n);
         for (int j = 0; j < algoritmos.size(); j++) {
             for (int k = 0; k < semillas.size(); k++) {
                 Set_random(semillas[k]);
-                if (algoritmos[j] == "greedy") {
-                    
+                if (algoritmos[j] == "greedy") {                    
+                    float coste = 0.0;
                     vector<float> seleccionados;
-
+                    seleccionados.resize(m,0);
+                    
                     Greedy g(n, m, matrizDistancias);
                     seleccionados = g.algoritmoGreedy();
 
