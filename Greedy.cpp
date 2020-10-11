@@ -25,7 +25,7 @@ primerElemento(0) {
     marcados.resize(tamN, false);
 }
 
-vector<float> Greedy::algoritmoGreedy() {
+vector<int> Greedy::algoritmoGreedy() {
 
     primerElemento = Randint(1, tamN);
     seleccionadosM.push_back(numPos);
@@ -46,7 +46,7 @@ vector<float> Greedy::algoritmoGreedy() {
 void Greedy::calculoDistancias(int i) {
     for (int j = 0; j < tamN; j++) {
         if (i < j) {
-            vDistancia[j] += distancias[i][j];
+            vDistancia[j] += distancias[i][j]; 
         } else {
             vDistancia[j] += distancias[j][i];
         }

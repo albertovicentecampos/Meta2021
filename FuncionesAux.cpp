@@ -161,14 +161,14 @@ void FuncionesAux::cargaParametrizacion(string nombreArchivo, vector<string>& ar
 
 }
 
-float FuncionesAux::coste(vector<vector<float>> matrizDistancias, int m, vector<float> seleccionados) {
+float FuncionesAux::coste(vector<vector<float>> matrizDistancias, int m, vector<int> seleccionados) {
     float coste = 0.0;
     for (int i = 0; i < m - 1; i++) {
         for (int j = i + 1; j < m; j++) {
-            if (matrizDistancias[seleccionados[i]][seleccionados[j]] == 0) {
-                coste += matrizDistancias[seleccionados[j]][seleccionados[i]];
-            } else {
+            if (seleccionados[i] < seleccionados[j]) {
                 coste += matrizDistancias[seleccionados[i]][seleccionados[j]];
+            } else {
+                coste += matrizDistancias[seleccionados[j]][seleccionados[i]];
             }
         }
     }
@@ -185,7 +185,7 @@ void FuncionesAux::visualizaMatriz(vector<vector<float>> matrizDistancias, int n
     }
 }
 
-void FuncionesAux::visualizaSeleccionados(vector<float> seleccionados, int m) {
+void FuncionesAux::visualizaSeleccionados(vector<int> seleccionados, int m) {
     for (int i = 0; i < m; i++) {
         cout << seleccionados[i] << ' ';
     }

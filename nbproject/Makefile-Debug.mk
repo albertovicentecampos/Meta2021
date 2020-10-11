@@ -35,6 +35,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/BusquedaLocal.o \
 	${OBJECTDIR}/FuncionesAux.o \
 	${OBJECTDIR}/Greedy.o \
 	${OBJECTDIR}/main.o \
@@ -64,6 +65,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/p1.exe: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.cc} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/p1 ${OBJECTFILES} ${LDLIBSOPTIONS}
+
+${OBJECTDIR}/BusquedaLocal.o: BusquedaLocal.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -g -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BusquedaLocal.o BusquedaLocal.cpp
 
 ${OBJECTDIR}/FuncionesAux.o: FuncionesAux.cpp
 	${MKDIR} -p ${OBJECTDIR}

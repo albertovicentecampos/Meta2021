@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include "FuncionesAux.h"
 #include "Greedy.h"
+#include "BusquedaLocal.h"
 #include <vector>
 
 using namespace std;
@@ -51,7 +52,7 @@ int main(int argc, char** argv) {
                 Set_random(semillas[k]);
                 if (algoritmos[j] == "greedy") {                    
                     float coste = 0.0;
-                    vector<float> seleccionados;
+                    vector<int> seleccionados;
                     seleccionados.resize(m,0);
                     
                     Greedy g(n, m, matrizDistancias);
@@ -64,6 +65,14 @@ int main(int argc, char** argv) {
                     cout << "Coste: " << coste << endl;
 
                 } else if (algoritmos[j] == "blocal") {
+                    
+                    float coste = 0.0;
+                    vector<int> seleccionados; 
+                    seleccionados.resize(m,0);
+                    
+                    BusquedaLocal bl(n,m,matrizDistancias,50000);
+                    
+                    /*seleccionados =*/ bl.algoritmoBusquedaLocal();
 
                 } else if (algoritmos[j] == "btabu") {
 

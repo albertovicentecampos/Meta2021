@@ -23,7 +23,7 @@ using namespace std;
 class Greedy {
 public:
     Greedy(int n, int m, vector<vector<float>> d);
-    vector<float> algoritmoGreedy();
+    vector<int> algoritmoGreedy();
     
     void calculoDistancias(int i);
     void mayorDistancia();
@@ -40,7 +40,7 @@ private:
     
     vector<float> vDistancia;
     vector<vector<float>> distancias;
-    vector<float> seleccionadosM;
+    vector<int> seleccionadosM;
     
     vector<bool> marcados;
     
