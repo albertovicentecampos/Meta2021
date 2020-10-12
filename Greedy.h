@@ -27,6 +27,7 @@ public:
     
     void calculoDistancias(int i);
     void mayorDistancia();
+    vector<bool> noSeleccionados();
     
 //    void maxDistancia();
 //    void calcularDistancia();

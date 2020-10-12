@@ -67,3 +67,7 @@ void Greedy::mayorDistancia() {
         }
     }
 }
+
+vector<bool> Greedy::noSeleccionados(){
+    return marcados; 
+}

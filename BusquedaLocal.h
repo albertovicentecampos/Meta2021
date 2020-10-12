@@ -33,6 +33,12 @@ public:
     
     int minimaDistancia();
     
+    float calculoAporteAntiguo(int pos);
+    float calculoAporteNuevo(int pos);
+    
+    void cambiarValor(int pos, int valor);
+    
+    
 private:
     int tamN;
     int tamM;
@@ -43,7 +49,13 @@ private:
     int numEvaluaciones; 
     int iter; 
     vector<int> solActual; 
+    
+    vector<int> vAntiguo;
+    vector<int> vNuevo;
+    
     float costeActual; 
+    
+    vector<bool> noSeleccionados; 
     
     FuncionesAux Faux; 
     
