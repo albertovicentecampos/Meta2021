@@ -28,7 +28,7 @@ primerElemento(0) {
 vector<int> Greedy::algoritmoGreedy() {
 
     primerElemento = Randint(1, tamN);
-    seleccionadosM.push_back(numPos);
+    seleccionadosM.push_back(primerElemento);
     marcados[primerElemento] = true;
 
     //Calculamos el vector de distancias
@@ -36,9 +36,6 @@ vector<int> Greedy::algoritmoGreedy() {
         calculoDistancias(seleccionadosM[i]);
         //Seleccionamos el mayor del momento
         mayorDistancia();
-        //Añadimos a la lista de los seleccionados
-        seleccionadosM.push_back(numPos);
-        marcados[numPos] = true;
     }
     return seleccionadosM;
 }
@@ -62,6 +59,8 @@ void Greedy::mayorDistancia() {
             if (marcados[i] == false) {
                 maxValor = vDistancia[i];
                 numPos = i; 
+                marcados[i] = true; 
+                seleccionadosM.push_back(i);
             }
 
         }

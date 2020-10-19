@@ -28,6 +28,9 @@ public:
     void solucionInicialAleatoria();
     void rellena();
     
+    void ordena();
+    void ordenaSolActual();
+    
     float calculaD(int numI);
     float consultaMatriz(int i, int j);
     
