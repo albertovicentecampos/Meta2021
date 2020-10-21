@@ -39,6 +39,14 @@ public:
     void visualizaMatriz(vector<vector<float>> matrizDistancias, int n);
     void visualizaSeleccionados(vector<int> seleccionados, int m);
     void rellena(vector<vector<float>> matrizDistancias, int n, set<int> &N);
+    
+    float calculoAporte(vector<vector<float> > distancias, vector<int> v,int tam, int pos);
+    float consultaMatriz(vector<vector<float>> distancias,int i, int j);
+    void cambiarValor(vector<int> v, int pos, int valor);
+    
+    
+    
+    
 };
 
 #endif /* FUNCIONESAUX_H */

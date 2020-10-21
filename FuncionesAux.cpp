@@ -38,9 +38,9 @@ void FuncionesAux::cargaFichero(string nombre, vector<vector<float>> &matriz, in
         fe>>num2;
         fe >> matriz[num1][num2];
 
-//        fe>>valor;
-//        matriz[num1][num2] = valor;
-//        matriz[num2][num1] = valor;
+        //        fe>>valor;
+        //        matriz[num1][num2] = valor;
+        //        matriz[num2][num1] = valor;
 
         getline(fe, linea);
     }
@@ -191,8 +191,33 @@ void FuncionesAux::visualizaSeleccionados(vector<int> seleccionados, int m) {
     }
 }
 
-void FuncionesAux::rellena(vector<vector<float>> matrizDistancias,int n, set<int>& N){
-    for(int i = 0; i< n; i++){
+void FuncionesAux::rellena(vector<vector<float>> matrizDistancias, int n, set<int>& N) {
+    for (int i = 0; i < n; i++) {
         N.insert(i);
     }
 }
+
+float FuncionesAux::calculoAporte(vector<vector<float> > distancias, vector<int> v, int tam, int pos) {
+    float aporte = 0.0;
+    for (int i = 0; i < tam; i++) {
+        aporte += consultaMatriz(distancias, v[i], v[pos]);
+    }
+    return aporte;
+}
+
+float FuncionesAux::consultaMatriz(vector<vector<float>> distancias, int i, int j) {
+    float valor = 0.0;
+    if (i < j) {
+        valor = distancias[i][j];
+    } else {
+        valor = distancias[j][i];
+    }
+    return valor;
+}
+
+void FuncionesAux::cambiarValor(vector<int> v, int pos, int valor){
+    v[pos] = valor; 
+}
+
+
+

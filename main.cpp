@@ -39,22 +39,22 @@ int main(int argc, char** argv) {
 
     //Cargamos los datos
     Faux.cargaParametrizacion(registro, archivos, algoritmos, semillas, numIntentosSinMov, probIntDiv, numEvalFuncionObj, numMaxVecinosVisit, tenenciaTabu);
-  
+
     for (int i = 0; i < archivos.size(); i++) {
+        
         vector<vector<float>> matrizDistancias;
         int n;
         int m;
         Faux.cargaFichero(archivos[i], matrizDistancias, n, m);
-
-        //Faux.visualizaMatriz(matrizDistancias, n);
+        
         for (int j = 0; j < algoritmos.size(); j++) {
             for (int k = 0; k < semillas.size(); k++) {
                 Set_random(semillas[k]);
-                if (algoritmos[j] == "greedy") {                    
+                if (algoritmos[j] == "greedy") {
                     float coste = 0.0;
                     vector<int> seleccionados;
-                    seleccionados.resize(m,0);
-                    
+                    seleccionados.resize(m, 0);
+
                     Greedy g(n, m, matrizDistancias);
                     seleccionados = g.algoritmoGreedy();
 
@@ -65,14 +65,18 @@ int main(int argc, char** argv) {
                     cout << "Coste: " << coste << endl;
 
                 } else if (algoritmos[j] == "blocal") {
-                    
                     float coste = 0.0;
-                    vector<int> seleccionados; 
-                    seleccionados.resize(m,0);
+                    vector<int> seleccionados;
+                    seleccionados.resize(m, 0);
+
+                    BusquedaLocal bl(n, m, matrizDistancias, 50000);
+                    seleccionados = bl.algoritmoBusquedaLocal();
                     
-                    BusquedaLocal bl(n,m,matrizDistancias,50000);
+                    Faux.visualizaSeleccionados(seleccionados,m);
+                    coste = Faux.coste(matrizDistancias, m, seleccionados);
                     
-                    /*seleccionados =*/ bl.algoritmoBusquedaLocal();
+                    cout<<endl;
+                    cout << "Coste: " << coste << endl;
 
                 } else if (algoritmos[j] == "btabu") {
 

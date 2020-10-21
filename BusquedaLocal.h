@@ -19,51 +19,42 @@
 #include "Greedy.h"
 #include <utility>
 
-using namespace std; 
+using namespace std;
 
 class BusquedaLocal {
 public:
     BusquedaLocal(int n, int m, vector<vector<float>> d, int nEvaluaciones);
-    /*vector<int>*/void algoritmoBusquedaLocal();
+    
+    vector<int> algoritmoBusquedaLocal();
+    
     void solucionInicialAleatoria();
     void rellena();
-    
-    void ordena();
-    void ordenaSolActual();
-    
     float calculaD(int numI);
     float consultaMatriz(int i, int j);
-    
-    int minimaDistancia();
-    
-    float calculoAporteAntiguo(int pos);
-    float calculoAporteNuevo(int pos);
-    
+    void ordena();
+    void ordenaSolActual();
     void cambiarValor(int pos, int valor);
-    
-    
+    float factorizacion();
+    float calculoAporte(vector<int> v);
+    void mejorar();
+
 private:
     int tamN;
     int tamM;
     vector<vector<float>> distancias;
-    
-    vector<pair<int, float>> vDistancia; 
-    
-    int numEvaluaciones; 
-    int iter; 
-    vector<int> solActual; 
-    
+    vector<pair<int, float>> vDistancia;
+    int numEvaluaciones;
+    int iter;
+    vector<int> solActual;
     vector<int> vAntiguo;
     vector<int> vNuevo;
-    
-    float costeActual; 
-    
-    vector<bool> noSeleccionados; 
-    
-    FuncionesAux Faux; 
-    
-    
-    
+    float costeActual;
+    vector<bool> noSeleccionados;
+    bool mejora;
+    float diferencia;
+    int posIntercambio;
+    FuncionesAux Faux;
+
 };
 
 #endif /* BUSQUEDALOCAL_H */

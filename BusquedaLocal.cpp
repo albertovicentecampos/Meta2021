@@ -20,7 +20,10 @@ tamM(m),
 distancias(d),
 numEvaluaciones(nEvaluaciones),
 iter(0),
-costeActual(0) {
+costeActual(0),
+mejora(false),
+diferencia(0.0),
+posIntercambio(0) {
     solActual.resize(tamM, 0);
     vAntiguo.resize(tamM, 0);
     vNuevo.resize(tamM, 0);
@@ -28,110 +31,50 @@ costeActual(0) {
     noSeleccionados.resize(tamN, false);
 }
 
-/*vector<int>*/ void BusquedaLocal::algoritmoBusquedaLocal() {
-
+vector<int> BusquedaLocal::algoritmoBusquedaLocal() {
     solucionInicialAleatoria();
-
-    int posIntercambio = 0;
-
+    posIntercambio = 0;
     while (iter < numEvaluaciones) {
-
-
         rellena();
         ordena();
         ordenaSolActual();
-
-        //        cout<<"VECTOR: "<<endl;
-        //        for(int  i = 0; i < tamM; i++){
-        //            cout<<vDistancia[i].second<< ' ';
-        //        }
-
-        bool mejora = false;
-
+        mejora = false;
         for (int i = 0; i < tamN; i++) {
             if (noSeleccionados[i] == false) {
                 cambiarValor(posIntercambio, i);
-
-                //Calcular el aporte del coste del que queremos intercambiar con respecto a todos
-                float aporteCosteViejo = 0.0;
-                aporteCosteViejo = calculoAporteAntiguo(posIntercambio);
-                //cout << "Aporte coste Viejo : " << aporteCosteViejo <<endl;
-
-                //Calcular el aporte del coste del nuevo no Seleccionado con respecto a los demás 
-                float aporteCosteNuevo = 0.0;
-                aporteCosteNuevo = calculoAporteNuevo(posIntercambio);
-                //cout << "Aporte coste Nuevo : " << aporteCosteNuevo <<endl;
+                diferencia = 0.0;
+                diferencia = factorizacion();
                 iter++;
-
-                //Calculamos la diferencia 
-                float diferencia = 0.0;
-                diferencia = aporteCosteNuevo - aporteCosteViejo;
-
-
                 if (diferencia > 0) {
-//                    cout << "INTERCAMBIAMOS LA POS: " << posIntercambio << "El valor de " << i << endl;
-//                    cout << "Vector Antiguo: ";
-//                    for (int i = 0; i < tamM; i++) {
-//                        cout << vAntiguo[i] << ' ';
-//                    }
-//                    cout<<"Coste antiguo: "<<costeActual<<endl;
-//                    cout<<endl; 
-//                    cout << "Vector Nuevo: ";
-//
-//                    for (int i = 0; i < tamM; i++) {
-//                        cout << vNuevo[i] << ' ';
-//                    }
-//                    
-//                    cout<<"Coste nuevo: "<<costeActual+diferencia<<endl;
-
-                    mejora = true;
-                    vAntiguo = vNuevo;
-                    solActual = vNuevo;
-                    costeActual += diferencia;
-
-                   // noSeleccionados[posIntercambio] = false;
-
+                    mejorar();
                     noSeleccionados[i] = true;
-                    posIntercambio = 0;
-                    //cout << "Coste:" << costeActual << endl;
                     break;
-
                 }
             }
-        } //FOR
-
-
-        //Comprobamos si no ha mejorado con todos los selecionados
-        //cout << "Diferencia: " << diferencia << endl;
-
-        if (!mejora) {
-            //cout<<"Entra"<<endl; 
-            //Se pasa al siguiente menor de la lista di
-            //noSeleccionados[valorP] = true;
-            posIntercambio++;
-
         }
-
-        //Se detiene la búsqueda si no mejora ningun vecino 
-        //Para que no se salga del array
+        //Comprobamos si no ha mejorado con todos los selecionados
+        if (!mejora) {
+            //Se pasa al siguiente menor de la lista di
+            posIntercambio++;
+        }
+        //Comprobación para que no se salga del array
         if (posIntercambio == tamM - 1) {
             break;
         }
-
-
-        //cout << "PosIntercambio: " << posIntercambio << endl;
     }
 
+    return solActual;
     cout << "VECTOR: " << endl;
     for (int i = 0; i < tamM; i++) {
         cout << vDistancia[i].first << ' ';
     }
-    cout<<endl;
+    cout << endl;
     cout << "Coste:" << costeActual << endl;
+
 }
 
 void BusquedaLocal::solucionInicialAleatoria() {
-    
+
     Greedy g(tamN, tamM, distancias);
     solActual = g.algoritmoGreedy();
     vAntiguo = solActual;
@@ -149,37 +92,12 @@ void BusquedaLocal::rellena() {
     }
 }
 
-void BusquedaLocal::ordena() {
-    //float temporal;
-    pair<int, float> temporal;
-
-    for (int i = 0; i < tamM; i++) {
-        for (int j = i + 1; j < tamM; j++) {
-
-            if (vDistancia[i].second > vDistancia[j].second) {
-                temporal = vDistancia[i];
-                vDistancia[i] = vDistancia[j];
-                vDistancia[j] = temporal;
-            }
-        }
-    }
-
-}
-
-void BusquedaLocal::ordenaSolActual(){
-    for(int i = 0; i<tamM; i++){
-        solActual[i] = vDistancia[i].first;
-    }
-    
-    vAntiguo = solActual;
-    vNuevo = solActual; 
-}
-
 float BusquedaLocal::calculaD(int numI) {
     float valorDistancia = 0.0;
     for (int i = 0; i < tamM; i++) {
         valorDistancia += consultaMatriz(numI, solActual[i]);
     }
+    return valorDistancia;
 }
 
 float BusquedaLocal::consultaMatriz(int i, int j) {
@@ -189,38 +107,60 @@ float BusquedaLocal::consultaMatriz(int i, int j) {
     } else {
         valor = distancias[j][i];
     }
+
+    return valor;
 }
 
-int BusquedaLocal::minimaDistancia() {
-    int pos = 0;
-    float menor = vDistancia[0].second;
-
-    for (int i = 1; i < tamM; i++) {
-        if (menor > vDistancia[i].second) {
-            menor = vDistancia[i].second;
-            pos = i;
+void BusquedaLocal::ordena() {
+    pair<int, float> temporal;
+    for (int i = 0; i < tamM; i++) {
+        for (int j = i + 1; j < tamM; j++) {
+            if (vDistancia[i].second > vDistancia[j].second) {
+                temporal = vDistancia[i];
+                vDistancia[i] = vDistancia[j];
+                vDistancia[j] = temporal;
+            }
         }
     }
-
-    return pos;
 }
 
-float BusquedaLocal::calculoAporteAntiguo(int pos) {
-    float aporte = 0.0;
+void BusquedaLocal::ordenaSolActual() {
     for (int i = 0; i < tamM; i++) {
-        aporte += consultaMatriz(vAntiguo[i], vAntiguo[pos]);
+        solActual[i] = vDistancia[i].first;
     }
-    return aporte;
-}
-
-float BusquedaLocal::calculoAporteNuevo(int pos) {
-    float aporte = 0.0;
-    for (int i = 0; i < tamM; i++) {
-        aporte += consultaMatriz(vNuevo[i], vNuevo[pos]);
-    }
-    return aporte;
+    vAntiguo = solActual;
+    vNuevo = solActual;
 }
 
 void BusquedaLocal::cambiarValor(int pos, int valor) {
     vNuevo[pos] = valor;
+}
+
+float BusquedaLocal::factorizacion() {
+    //Calcular el aporte del coste del que queremos intercambiar con respecto a todos
+    float aporteCosteViejo = 0.0;
+    float aporteCosteNuevo = 0.0;
+    float diferencia = 0.0;
+
+    aporteCosteViejo = calculoAporte(vAntiguo);
+    aporteCosteViejo = calculoAporte(vNuevo);
+
+    diferencia = aporteCosteNuevo - aporteCosteViejo;
+    return diferencia;
+}
+
+float BusquedaLocal::calculoAporte(vector<int> v) {
+    float aporte = 0.0;
+    for (int i = 0; i < tamM; i++) {
+        aporte += consultaMatriz(v[i], v[posIntercambio]);
+    }
+    return aporte;
+}
+
+void BusquedaLocal::mejorar() {
+    mejora = true;
+    vAntiguo = vNuevo;
+    solActual = vNuevo;
+    costeActual += diferencia;
+    posIntercambio = 0;
 }
