@@ -79,7 +79,20 @@ int main(int argc, char** argv) {
                     cout << "Coste: " << coste << endl;
 
                 } else if (algoritmos[j] == "btabu") {
-
+                    
+                    float coste = 0.0;
+                    vector<int> seleccionados;
+                    seleccionados.resize(m,0);
+                    
+                    BusquedaTabu bt(n,m,matrizDistancias);
+                    seleccionados = bt.algoritmoBusquedaTabu();
+                    
+                    Faux.visualizaSeleccionados(seleccionados,m);
+                    coste = Faux.coste(matrizDistancias,m,seleccionados);
+                    
+                    cout<<endl;
+                    cout<< "Coste: "<< coste << endl; 
+                    
                 }
             }
         }

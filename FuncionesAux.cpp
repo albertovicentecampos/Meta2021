@@ -221,3 +221,25 @@ void FuncionesAux::cambiarValor(vector<int> v, int pos, int valor){
 
 
 
+void FuncionesAux::solucionAleatoria(vector<int>& sol, vector<bool>& noSeleccionados, int tamM, int tamN){
+    
+//    int valor = Randint(0,tamN);
+//    
+//    int i = 0; 
+//    while(i<tamM){
+//        
+//        bool noEsta = false;
+//        for(int j = 0; j<i; j++){
+//            if(sol[j] != valor){
+//                noEsta = true;                
+//            }else{
+//                
+//            }
+//        }
+//        
+//        if(noEsta){
+//            sol[i]=valor;
+//        }
+//    }
+    
+}

@@ -36,6 +36,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 # Object Files
 OBJECTFILES= \
 	${OBJECTDIR}/BusquedaLocal.o \
+	${OBJECTDIR}/BusquedaTabu.o \
 	${OBJECTDIR}/FuncionesAux.o \
 	${OBJECTDIR}/Greedy.o \
 	${OBJECTDIR}/main.o \
@@ -70,6 +71,11 @@ ${OBJECTDIR}/BusquedaLocal.o: BusquedaLocal.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BusquedaLocal.o BusquedaLocal.cpp
+
+${OBJECTDIR}/BusquedaTabu.o: BusquedaTabu.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/BusquedaTabu.o BusquedaTabu.cpp
 
 ${OBJECTDIR}/FuncionesAux.o: FuncionesAux.cpp
 	${MKDIR} -p ${OBJECTDIR}

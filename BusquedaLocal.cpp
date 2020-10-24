@@ -75,11 +75,17 @@ vector<int> BusquedaLocal::algoritmoBusquedaLocal() {
 
 void BusquedaLocal::solucionInicialAleatoria() {
 
+    //Solucion inicial por Greedy
     Greedy g(tamN, tamM, distancias);
     solActual = g.algoritmoGreedy();
     vAntiguo = solActual;
     vNuevo = solActual;
     noSeleccionados = g.noSeleccionados();
+    
+    //Solucion inical aleatoria
+    
+    
+    
     costeActual = Faux.coste(distancias, tamM, solActual);
 }
 
