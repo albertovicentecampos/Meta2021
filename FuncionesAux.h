@@ -44,7 +44,7 @@ public:
     float consultaMatriz(vector<vector<float>> distancias,int i, int j);
     void cambiarValor(vector<int> v, int pos, int valor);
     
-    void solucionAleatoria(vector<int>& sol, vector<bool>& noSeleccionados, int tamM);
+    void solucionAleatoria(vector<int>& sol, vector<bool>& noSeleccionados, int tamM, int tamN);
     
     
     

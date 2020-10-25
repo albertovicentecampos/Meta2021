@@ -15,6 +15,7 @@
 #include "FuncionesAux.h"
 #include "Greedy.h"
 #include "BusquedaLocal.h"
+#include "BusquedaTabu.h"
 #include <vector>
 
 using namespace std;
@@ -84,13 +85,13 @@ int main(int argc, char** argv) {
                     vector<int> seleccionados;
                     seleccionados.resize(m,0);
                     
-                    BusquedaTabu bt(n,m,matrizDistancias);
+                    BusquedaTabu bt(n,m,matrizDistancias,5,10,50000,100,0.5);
                     seleccionados = bt.algoritmoBusquedaTabu();
                     
                     Faux.visualizaSeleccionados(seleccionados,m);
                     coste = Faux.coste(matrizDistancias,m,seleccionados);
                     
-                    cout<<endl;
+                    cout<<endl;                 
                     cout<< "Coste: "<< coste << endl; 
                     
                 }

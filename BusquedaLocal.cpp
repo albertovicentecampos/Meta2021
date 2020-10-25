@@ -81,11 +81,14 @@ void BusquedaLocal::solucionInicialAleatoria() {
     vAntiguo = solActual;
     vNuevo = solActual;
     noSeleccionados = g.noSeleccionados();
-    
+
+
+
+
     //Solucion inical aleatoria
-    
-    
-    
+
+
+
     costeActual = Faux.coste(distancias, tamM, solActual);
 }
 

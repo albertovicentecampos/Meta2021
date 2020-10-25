@@ -27,12 +27,14 @@ posIntercambio(0),
 numIntentosSinMov(numIntSinMov),
 probabilidadDivInt(probDivInt) {
 
+    vDistancia.reserve(tamM);
+
     solGlobal.resize(tamM, 0);
     solActual.resize(tamM, 0);
     solMejorVecinos.resize(tamM, 0);
 
     listaTabu.resize(tenencia, -1);
-    memLargoPlazo.resize(n, 0);
+    memLargoPlazo.resize(tamN, 0);
 
     noSeleccionados.resize(tamN, false);
 
@@ -46,11 +48,14 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
     posIntercambio = 0;
     int reinicializacion = 0;
 
+    Faux.visualizaSeleccionados(solActual, tamM);
+
     while (iter < numEvaluaciones) {
 
         rellena();
         ordena();
         ordenaSolActual();
+
 
         int vecino = 0;
         int elementoLT = 0;
@@ -67,13 +72,23 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                     }
                 }
                 if (!esTabu) {
-                    //Comprobamos que el elemento que cogemos de los no seleccionados no está en la lista Tabu 
+                    //Comprobamos que el elemento que cogemos de los no seleccionados no está en la lista Tabu                        
                     if (vecino < tamVecinos) {
                         cambiarValor(posIntercambio, i);
-                        float diferencia = 0.0;
-                        diferencia = factorizacion();
+                        //FACTORIZACION
+                        //                        float diferencia = 0.0;
+                        //                        diferencia = factorizacion();
+                        //                        cout<<"Diferencia: "<<diferencia<<endl;
+
+                        //                        costeActual += diferencia;                   
+
+                        //NO FACTORIZACION
+                        
+                        costeActual = Faux.coste(distancias,tamM,solActual);
+                        
                         iter++;
-                        costeActual += diferencia;
+
+                        //cout << "Mejora Coste vecindario: " << costeMejorVecindario << " es mejor que Coste actual: " << costeActual << endl;
                         if (costeMejorVecindario < costeActual) {
                             costeMejorVecindario = costeActual;
                             solMejorVecinos = vNuevo;
@@ -81,52 +96,30 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                         }
                         elementoLT = vAntiguo[posIntercambio];
                         vecino++;
-
-                        //                    if (diferencia > 0) {
-                        //                        mejorar(diferencia);
-                        //                        noSeleccionados[i] = true;
-                        //                    }
-
-
-
-
-                        //                    float costeAux = 0.0;
-                        //                    elementoLT = solActual[posIntercambio];
-                        //                    solActual[posIntercambio] = i;
-                        //                    costeAux = Faux.coste(distancias,tamM,solMomento);
-                        //                    
-                        //                    if(costeMomento < costeAux ){                     
-                        //                        solMomento = solActual; 
-                        //                        costeMomento = costeAux; 
-                        //                    }
-
-
                     } else {
                         //Si lleva 10 vecinos paramos
                         break;
                     }
                 }
             }
-        }
+        }//for
 
         //Añadimos a la lista Tabu 
-
         listaTabu.push_back(elementoLT);
         listaTabu.pop_front();
 
         //Actualizamos la memoria a largo plazo 
-
         for (int i = 0; i < tamM; i++) {
             memLargoPlazo[solMejorVecinos[i]]++;
         }
-
 
         //Sustituimos solVecindario por solActual (Para la siguiente iteracion
         solActual = solMejorVecinos;
 
         //Comprobamos que la mejor solucion de nuestros 10 vecinos es mejor que la global
-
+        //cout << "Mejora Coste vecindario: " << costeMejorVecindario << " es mejor que Coste Global: " << costeGlobal << endl;
         if (costeMejorVecindario > costeGlobal) {
+            cout << "Mejora Coste vecindario: " << costeMejorVecindario << " es mejor que Coste Global: " << costeGlobal << endl;
             solGlobal = solMejorVecinos;
             costeGlobal = costeMejorVecindario;
             reinicializacion = 0;
@@ -137,6 +130,7 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
 
         if (reinicializacion == numIntentosSinMov) {
             //Reinicio oscilacion estratégica
+            cout << "REINCICIALIZACION" << endl;
             reinicializacion = 0;
             float num = Randfloat(0, 1);
 
@@ -151,7 +145,6 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
             }
 
             //Ordenamos la memoria a largo plazo de menor a mayor
-
             pair<int, int> temporal;
             for (int i = 0; i < tamN; i++) {
                 for (int j = i + 1; j < tamN; j++) {
@@ -173,22 +166,39 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
 
             if (num <= probabilidadDivInt) {
                 //Diversificamos (Cogemos los del principio hasta tamM pq son los mas pequeños)
+                cout << "Intensificamos" << endl;
                 for (int i = 0; i < tamM; i++) {
                     solActual[i] = memAux[i];
                 }
-                
+
+                for (int i = 0; i < tamM; i++) {
+                    cout << solActual[i] << ' ';
+
+                }
+                cout << endl;
             } else {
                 //Intensificamos (Cogemos los del final hasta tamM pq son los mas grandes)
+                cout << "Diversificamos" << endl;
                 int tam = tamM;
                 for (int i = 0; i < tamM; i++) {
                     solActual[i] = memAux[tam];
                     tam--;
-                } 
-                
+                }
+
+                for (int i = 0; i < tamM; i++) {
+                    cout << solActual[i] << ' ';
+
+                }
+                cout << endl;
             }
+            
+            
+            //memLargoPlazo.resize(tamN,0);
         }
 
-    }
+    }//While
+
+    return solGlobal;
 
 }
 
@@ -202,7 +212,15 @@ void BusquedaTabu::solucionInicialAleatoria() {
     vAntiguo = solActual;
     vNuevo = solActual;
 
-    noSeleccionados = g.noSeleccionados();
+    //noSeleccionados = g.noSeleccionados();
+    for (int i = 0; i < tamM; i++) {
+        noSeleccionados[solActual[i]] = true;
+    }
+
+    //    for (int i = 0; i < tamN; i++) {
+    //        cout << noSeleccionados[i] << ' ';
+    //    }
+    //    cout << endl;
 
     costeActual = Faux.coste(distancias, tamM, solActual);
     costeGlobal = costeActual;
@@ -212,6 +230,10 @@ void BusquedaTabu::solucionInicialAleatoria() {
 void BusquedaTabu::rellena() {
     vAntiguo = solActual;
     vNuevo = solActual;
+    noSeleccionados.resize(tamN, false);
+    for (int i = 0; i < tamM; i++) {
+        noSeleccionados[solActual[i]] = true;
+    }
     for (int i = 0; i < tamM; i++) {
         vDistancia[i].first = solActual[i];
         vDistancia[i].second = calculaD(solActual[i]);
@@ -256,7 +278,7 @@ void BusquedaTabu::ordenaSolActual() {
     }
     vAntiguo = solActual;
     vNuevo = solActual;
-    solMejorVecinos = solActual;
+    //solMejorVecinos = solActual;
     //solGlobal = solActual; 
 }
 
