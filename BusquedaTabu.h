@@ -70,6 +70,8 @@ private:
     vector<int> vAntiguo;
     vector<int> vNuevo;
 
+    
+    float costeActualNuevo;
     float probabilidadDivInt; 
 };
 

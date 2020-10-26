@@ -152,7 +152,7 @@ float BusquedaLocal::factorizacion() {
     float diferencia = 0.0;
 
     aporteCosteViejo = calculoAporte(vAntiguo);
-    aporteCosteViejo = calculoAporte(vNuevo);
+    aporteCosteNuevo = calculoAporte(vNuevo);
 
     diferencia = aporteCosteNuevo - aporteCosteViejo;
     return diferencia;
