@@ -1,4 +1,4 @@
-archivos: GKD-c_2_n500_m50.txt 
+archivos: GKD-c_1_n500_m50.txt 
 algoritmos: btabu
 semillas: 26532156
 numIntentosSinMovimiento: 0

@@ -60,9 +60,31 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
         int vecino = 0;
         int elementoLT = 0;
 
+        //        for (int i = 0; i < tamN; i++) {
+        //            cout << noSeleccionados[i] << ' ';
+        //        }
+        //        cout << endl;
+
+        cout << "Ya ordenado: ";
+        Faux.visualizaSeleccionados(solActual, tamM);
+        cout << endl;
+
+        vAntiguo = solActual;
+        vNuevo = solActual;
+
+        for (int i = 0; i < tamN; i++) {
+            noSeleccionados[i] = false;
+        }
+
+        for (int i = 0; i < tamM; i++) {
+            noSeleccionados[solActual[i]] = true;
+        }
+
+
         for (int i = 0; i < tamN; i++) {
             if (noSeleccionados[i] == false) {
                 //Comprobamos que no este en la lista tabu
+                //cout<<"Entraaaaaaaaaaaaaaaaaaaaaaaa"<<endl;
                 bool esTabu = false;
                 list<int>::iterator it;
                 for (it = listaTabu.begin(); it != listaTabu.end(); it++) {
@@ -75,21 +97,29 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                     //Comprobamos que el elemento que cogemos de los no seleccionados no está en la lista Tabu                        
                     if (vecino < tamVecinos) {
                         cambiarValor(posIntercambio, i);
-                        //FACTORIZACION
-                        //                        float diferencia = 0.0;
-                        //                        diferencia = factorizacion();
-                        //                        cout<<"Diferencia: "<<diferencia<<endl;
+                        //                                                cout<<"Intercambio en la posicion: "<<posIntercambio<<" el valor de: "<<i<<endl;
+                        //                                                Faux.visualizaSeleccionados(vAntiguo,tamM);
+                        //                                                cout<<endl;
+                        //                                                Faux.visualizaSeleccionados(vNuevo,tamM);
 
-                        //                        costeActual += diferencia;                   
+                        //FACTORIZACION
+//                        float costeA = costeActual;
+//                                                float diferencia = 0.0;
+//                                                diferencia = factorizacion();
+//                                                //cout<<"Diferencia: "<<diferencia<<endl;
+//                                                
+//                                                costeA += diferencia;                   
 
                         //NO FACTORIZACION
-                        
-                        costeActual = Faux.coste(distancias,tamM,solActual);
-                        
-                        iter++;
 
-                        //cout << "Mejora Coste vecindario: " << costeMejorVecindario << " es mejor que Coste actual: " << costeActual << endl;
+                        costeActual = Faux.coste(distancias, tamM, vNuevo);
+
+                        //iter++;
+
+
+                        //                        cout << "Mejora Coste vecindario: " << costeMejorVecindario << " es mejor que Coste actual: " << costeActual << endl;
                         if (costeMejorVecindario < costeActual) {
+                            iter++;
                             costeMejorVecindario = costeActual;
                             solMejorVecinos = vNuevo;
                             //Lo marcamos true en los no seleccionados? 
@@ -105,8 +135,28 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
         }//for
 
         //Añadimos a la lista Tabu 
-        listaTabu.push_back(elementoLT);
-        listaTabu.pop_front();
+        bool esta = false;
+        list<int>::iterator it2;
+        for (it2 = listaTabu.begin(); it2 != listaTabu.end(); it2++) {
+            if (elementoLT == *it2) {
+                esta = true;
+            }
+        }
+
+        cout << "itercacion: " << iter << endl;
+
+        if (!esta) {
+            listaTabu.push_back(elementoLT);
+            listaTabu.pop_front();
+        }
+
+
+//                cout << "LitaT: ";
+//                list<int>::iterator it;
+//                for (it = listaTabu.begin(); it != listaTabu.end(); it++) {
+//                    cout << *it << "->";
+//                }
+//                cout << endl;
 
         //Actualizamos la memoria a largo plazo 
         for (int i = 0; i < tamM; i++) {
@@ -117,7 +167,7 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
         solActual = solMejorVecinos;
 
         //Comprobamos que la mejor solucion de nuestros 10 vecinos es mejor que la global
-        //cout << "Mejora Coste vecindario: " << costeMejorVecindario << " es mejor que Coste Global: " << costeGlobal << endl;
+        cout << "Mejora Coste vecindario: " << costeMejorVecindario << "y  Coste Global: " << costeGlobal << endl;
         if (costeMejorVecindario > costeGlobal) {
             cout << "Mejora Coste vecindario: " << costeMejorVecindario << " es mejor que Coste Global: " << costeGlobal << endl;
             solGlobal = solMejorVecinos;
@@ -127,6 +177,7 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
             reinicializacion++;
         }
 
+        costeMejorVecindario = 0;
 
         if (reinicializacion == numIntentosSinMov) {
             //Reinicio oscilacion estratégica
@@ -134,6 +185,8 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
             reinicializacion = 0;
             float num = Randfloat(0, 1);
 
+            //iter++;
+            cout << "Reini: iter: " << iter << endl;
             //Reordenamos el vector
 
             vector<pair<int, int>> MLPlazo;
@@ -165,36 +218,42 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
             }
 
             if (num <= probabilidadDivInt) {
-                //Diversificamos (Cogemos los del principio hasta tamM pq son los mas pequeños)
-                cout << "Intensificamos" << endl;
-                for (int i = 0; i < tamM; i++) {
-                    solActual[i] = memAux[i];
-                }
-
-                for (int i = 0; i < tamM; i++) {
-                    cout << solActual[i] << ' ';
-
-                }
-                cout << endl;
-            } else {
-                //Intensificamos (Cogemos los del final hasta tamM pq son los mas grandes)
                 cout << "Diversificamos" << endl;
+                //Diversificamos (Cogemos los del principio hasta tamM pq son los mas pequeños)
+                //                cout << "Intensificamos" << endl;
+                for (int i = 0; i < tamM; i++) {
+                    solActual[i] = MLPlazo[i].first;
+                    //solActual[i] = memAux[i];
+                }
+                
+                                                for (int i = 0; i < tamM; i++) {
+                                                    cout << solActual[i] << ' ';
+                                
+                                                }
+                                                cout << endl;
+            } else {
+                cout << "Intensificamos" << endl;
+                //Intensificamos (Cogemos los del final hasta tamM pq son los mas grandes)
+                //                cout << "Diversificamos" << endl;
                 int tam = tamM;
                 for (int i = 0; i < tamM; i++) {
-                    solActual[i] = memAux[tam];
+                    solActual[i] = MLPlazo[i].first;
+                    //solActual[i] = memAux[tam];
                     tam--;
                 }
 
-                for (int i = 0; i < tamM; i++) {
-                    cout << solActual[i] << ' ';
-
-                }
-                cout << endl;
+                                                for (int i = 0; i < tamM; i++) {
+                                                    cout << solActual[i] << ' ';
+                                
+                                                }
+                                                cout << endl;
             }
-            
-            
+
+
             //memLargoPlazo.resize(tamN,0);
         }
+
+        //iter++;
 
     }//While
 
