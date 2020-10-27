@@ -65,21 +65,21 @@ int main(int argc, char** argv) {
                     vector<int> seleccionados;
                     seleccionados.resize(m, 0);
 
-                    Greedy* g = new Greedy(n, m, matrizDistancias,l);
+                    Greedy* g = new Greedy(n, m, matrizDistancias, l);
                     start_timers();
                     seleccionados = g->algoritmoGreedy();
                     elapsed_time();
 
-                    Faux.visualizaSeleccionados(seleccionados, m);
+                    //Faux.visualizaSeleccionados(seleccionados, m);
                     coste = Faux.coste(matrizDistancias, m, seleccionados);
 
                     cout << "Tiempo en realizar e algoritmo: " + to_string(elapsed_time()) + " segundos" << endl;
-                    l->escribirEnArchivo("COSTE GREEDY: "+to_string(coste));
+                    l->escribirEnArchivo("COSTE GREEDY: " + to_string(coste));
                     l->saltoLinea();
                     l->escribirEnArchivo("Tiempo en realizar el algoritmo: " + to_string(elapsed_time()) + " segundos");
                     l->cerrarArchivo();
-                    cout << endl;
-                    cout << "Coste: " << coste << endl;
+                    //                    cout << endl;
+                    //                    cout << "Coste: " << coste << endl;
 
                 } else if (algoritmos[j] == "blocal") {
                     Log *l2 = new Log(archivos[i], semillas[k], algoritmos[j]);
@@ -91,7 +91,7 @@ int main(int argc, char** argv) {
                     vector<int> seleccionados;
                     seleccionados.resize(m, 0);
 
-                    BusquedaLocal* bl = new BusquedaLocal(n, m, matrizDistancias, numEval,l2);
+                    BusquedaLocal* bl = new BusquedaLocal(n, m, matrizDistancias, numEval, l2);
                     start_timers();
                     seleccionados = bl->algoritmoBusquedaLocal();
                     elapsed_time();
@@ -100,6 +100,8 @@ int main(int argc, char** argv) {
                     coste = Faux.coste(matrizDistancias, m, seleccionados);
 
                     cout << "Tiempo en realizar e algoritmo: " + to_string(elapsed_time()) + " segundos" << endl;
+                    l2->escribirEnArchivo("COSTE BUSQUEDA LOCAL: " + to_string(coste));
+                    l2->saltoLinea();
                     l2->escribirEnArchivo("Tiempo en realizar el algoritmo: " + to_string(elapsed_time()) + " segundos");
                     l2->cerrarArchivo();
                     cout << endl;
@@ -117,15 +119,17 @@ int main(int argc, char** argv) {
                     vector<int> seleccionados;
                     seleccionados.resize(m, 0);
 
-                    BusquedaTabu* bt = new BusquedaTabu(n, m, matrizDistancias, tenenciaTabu, numVecinosVisit, numEval, numIntentosSinMov, probIntDiv,l3);
+                    BusquedaTabu* bt = new BusquedaTabu(n, m, matrizDistancias, tenenciaTabu, numVecinosVisit, numEval, numIntentosSinMov, probIntDiv, l3);
                     start_timers();
                     seleccionados = bt->algoritmoBusquedaTabu();
                     elapsed_time();
-                    
+
                     Faux.visualizaSeleccionados(seleccionados, m);
                     coste = Faux.coste(matrizDistancias, m, seleccionados);
 
                     cout << "Tiempo en realizar e algoritmo: " + to_string(elapsed_time()) + " segundos" << endl;
+                    l3->escribirEnArchivo("COSTE BUSQUEDA TABU: " + to_string(coste));
+                    l3->saltoLinea();
                     l3->escribirEnArchivo("Tiempo en realizar el algoritmo: " + to_string(elapsed_time()) + " segundos");
                     l3->cerrarArchivo();
                     cout << endl;

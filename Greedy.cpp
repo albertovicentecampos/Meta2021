@@ -20,7 +20,7 @@ distancias(d),
 maxValor(0.0),
 numPos(0),
 primerElemento(0),
-l(log){
+l(log) {
     vDistancia.resize(tamN, 0);
     vN.resize(tamN, 0);
     marcados.resize(tamN, false);
@@ -46,6 +46,14 @@ vector<int> Greedy::algoritmoGreedy() {
         //Seleccionamos el mayor del momento
         mayorDistancia();
     }
+
+
+    l->escribirEnArchivo("MEJOR SOLUCION GREEDY: ");
+    for (int j = 0; j < tamM; j++) {
+        l->escribirEnArchivoVector(to_string(seleccionadosM[j]) + ' ');
+    }
+    l->saltoLinea();
+   
     return seleccionadosM;
 }
 
@@ -78,7 +86,7 @@ void Greedy::mayorDistancia() {
         }
     }
 
-    
+
     for (int i = 0; i < tamN; i++) {
         if (marcados[distMayor[i].first] == false) {
             l->escribirEnArchivo("Elemento: " + to_string(distMayor[i].first) + " con un valor de " + to_string(distMayor[i].second));

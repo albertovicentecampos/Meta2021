@@ -35,7 +35,7 @@ public:
     void cambiarValor(int pos, int valor);
     float factorizacion();
     float calculoAporte(vector<int> v);
-    void mejorar(float diferencia);
+
     
 private:
     

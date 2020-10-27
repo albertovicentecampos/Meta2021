@@ -24,8 +24,7 @@ costeActual(0),
 mejora(false),
 diferencia(0.0),
 posIntercambio(0),
-l(log)
-{
+l(log) {
     solActual.resize(tamM, 0);
     vAntiguo.resize(tamM, 0);
     vNuevo.resize(tamM, 0);
@@ -35,19 +34,42 @@ l(log)
 
 vector<int> BusquedaLocal::algoritmoBusquedaLocal() {
     solucionInicialAleatoria();
+
+    l->escribirEnArchivo("Solucion inicial aleatoria: ");
+    for (int i = 0; i < tamM; i++) {
+        l->escribirEnArchivoVector(to_string(solActual[i]) + ' ');
+    }
+    l->saltoLinea();
+
     posIntercambio = 0;
+
     while (iter < numEvaluaciones) {
+
+        l->escribirEnArchivo("ITERACION: " + to_string(iter));
+        l->saltoLinea();
         rellena();
         ordena();
         ordenaSolActual();
+
+        l->escribirEnArchivo("REORDENAMOS Solucion en funcion de las distancias: ");
+        for (int i = 0; i < tamM; i++) {
+            l->escribirEnArchivoVector(to_string(solActual[i]) + ' ');
+        }
+        l->saltoLinea();
+
         mejora = false;
+
         for (int i = 0; i < tamN; i++) {
             if (noSeleccionados[i] == false) {
+                l->escribirEnArchivo("Probamos intercambio en la pos " + to_string(posIntercambio) + " el valor de " + to_string(i));
+                l->saltoLinea();
                 cambiarValor(posIntercambio, i);
                 diferencia = 0.0;
                 diferencia = factorizacion();
                 iter++;
                 if (diferencia > 0) {
+                    l->escribirEnArchivo("Diferencia positiva -> mejorar");
+                    l->saltoLinea();
                     mejorar();
                     noSeleccionados[i] = true;
                     break;
@@ -58,6 +80,8 @@ vector<int> BusquedaLocal::algoritmoBusquedaLocal() {
         if (!mejora) {
             //Se pasa al siguiente menor de la lista di
             posIntercambio++;
+            l->escribirEnArchivo("No nos ha mejorado con los seleccionados. Pasamos al siguiente de solActual: " + to_string(vAntiguo[posIntercambio]));
+
         }
         //Comprobación para que no se salga del array
         if (posIntercambio == tamM - 1) {
@@ -65,20 +89,21 @@ vector<int> BusquedaLocal::algoritmoBusquedaLocal() {
         }
     }
 
-    return solActual;
-    cout << "VECTOR: " << endl;
-    for (int i = 0; i < tamM; i++) {
-        cout << vDistancia[i].first << ' ';
+    l->escribirEnArchivo("MEJOR SOLUCION BUSQUEDA LOCAL: ");
+    for (int j = 0; j < tamM; j++) {
+        l->escribirEnArchivoVector(to_string(solActual[j]) + ' ');
     }
-    cout << endl;
-    cout << "Coste:" << costeActual << endl;
+//    l->saltoLinea();
+//    l->escribirEnArchivo("MEJOR COSTE DE LA SOLUCION DE BUSQUEDA LOCAL: " + to_string(costeActual));
+   
+    return solActual;
 
 }
 
 void BusquedaLocal::solucionInicialAleatoria() {
 
     //Solucion inicial por Greedy
-    Greedy g(tamN, tamM, distancias,l);
+    Greedy g(tamN, tamM, distancias, l);
     solActual = g.algoritmoGreedy();
     vAntiguo = solActual;
     vNuevo = solActual;
@@ -154,9 +179,13 @@ float BusquedaLocal::factorizacion() {
     float diferencia = 0.0;
 
     aporteCosteViejo = calculoAporte(vAntiguo);
+    l->escribirEnArchivo("Aporte coste viejo: " + to_string(aporteCosteViejo));
     aporteCosteNuevo = calculoAporte(vNuevo);
-
+    l->escribirEnArchivo("Aporte coste nuevo: " + to_string(aporteCosteNuevo));
+    l->saltoLinea();
     diferencia = aporteCosteNuevo - aporteCosteViejo;
+    l->escribirEnArchivo("DIFERENCIA: " + to_string(diferencia));
+    l->saltoLinea();
     return diferencia;
 }
 
@@ -174,4 +203,13 @@ void BusquedaLocal::mejorar() {
     solActual = vNuevo;
     costeActual += diferencia;
     posIntercambio = 0;
+
+    l->escribirEnArchivo("MEJORAMOS SOLUCION ACTUAL: ");
+    for (int i = 0; i < tamM; i++) {
+        l->escribirEnArchivoVector(to_string(solActual[i]) + ' ');
+    }
+    l->saltoLinea();
+    l->escribirEnArchivo("CUYO COSTE ES DE : " + to_string(costeActual));
+    l->saltoLinea();
+
 }

@@ -47,15 +47,33 @@ l(log) {
 vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
 
     solucionInicialAleatoria();
+
+    l->escribirEnArchivo("Solucion inicial aleatoria: ");
+    for (int i = 0; i < tamM; i++) {
+        l->escribirEnArchivoVector(to_string(solActual[i]) + ' ');
+    }
+    l->saltoLinea();
+    l->escribirEnArchivo("Coste solucion: " + to_string(costeActual));
+
     posIntercambio = 0;
     int reinicializacion = 0;
-    Faux.visualizaSeleccionados(solActual, tamM);
+
+    //Faux.visualizaSeleccionados(solActual, tamM);
 
     while (iter < numEvaluaciones) {
 
+        l->escribirEnArchivo("ITERACION: " + to_string(iter));
+        l->saltoLinea();
         rellena();
         ordena();
         ordenaSolActual();
+
+        l->escribirEnArchivo("REORDENAMOS Solucion en funcion de las distancias: ");
+        for (int i = 0; i < tamM; i++) {
+            l->escribirEnArchivoVector(to_string(solActual[i]) + ' ');
+        }
+        l->saltoLinea();
+
         int vecino = 0;
         int elementoLT = 0;
 
@@ -82,8 +100,17 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                         break;
                     }
                 }
+
+                list<int>::iterator it1;
+                l->escribirEnArchivo("LISTA TABU: ");
+                for (it1 = listaTabu.begin(); it1 != listaTabu.end(); it1++) {
+                    l->escribirEnArchivoVector(to_string(*it1) + " < - ");
+                }
+                l->saltoLinea();
+
                 if (!esTabu) {
                     //Comprobamos que el elemento que cogemos de los no seleccionados no está en la lista Tabu                        
+                    l->escribirEnArchivo("El elemento " + to_string(i) + " no esta en la lista tabu ");
                     if (vecino < tamVecinos) {
                         cambiarValor(posIntercambio, i);
                         //FACTORIZACION
@@ -91,7 +118,7 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                         float diferencia = 0.0;
                         diferencia = factorizacion();
                         costeActualNuevo += diferencia;
-
+                        l->escribirEnArchivo("VECINO: " + to_string(vecino + 1) + " - COSTE: " + to_string(costeActualNuevo));
                         //cout << "Mejora Coste vecindario: " << costeMejorVecindario << " es mejor que Coste actual: " << costeActual << endl;
                         if (costeMejorVecindario < costeActualNuevo) {
                             iter++;
@@ -101,6 +128,14 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                         elementoLT = vAntiguo[posIntercambio];
                         vecino++;
                     } else {
+
+                        l->escribirEnArchivo("EL MEJOR VECINO DE LOS 10 VISITADOS TIENE UN COSTE DE: " + to_string(costeMejorVecindario));
+                        l->escribirEnArchivo("EL MEJOR VECINO DE LOS 10 VISITADOS TIENE UNA SOLUCION DE: ");
+
+                        for (int i = 0; i < tamM; i++) {
+                            l->escribirEnArchivoVector(to_string(solMejorVecinos[i]) + ' ');
+                        }
+
                         //Si lleva 10 vecinos paramos
                         break;
                     }
@@ -116,23 +151,47 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                 esta = true;
             }
         }
+
+
+
         if (!esta) {
             listaTabu.push_back(elementoLT);
             listaTabu.pop_front();
+
+            list<int>::iterator it3;
+            l->escribirEnArchivo("ACTUALIZAMOS LISTA TABU: ");
+            for (it3 = listaTabu.begin(); it3 != listaTabu.end(); it3++) {
+                l->escribirEnArchivoVector(to_string(*it3) + " < - ");
+            }
+            l->saltoLinea();
+
         }
 
-        cout << "iteracion: " << iter << endl;
+        //cout << "iteracion: " << iter << endl;
 
         //Actualizamos la memoria a largo plazo 
         for (int i = 0; i < tamM; i++) {
             memLargoPlazo[solMejorVecinos[i]]++;
         }
 
+        l->escribirEnArchivo("----- ACTUALIZAMOS MEMORIA A LARGO PLAZO ----- ");
+        for (int i = 0; i < tamN; i++) {
+            l->escribirEnArchivoVector(to_string(memLargoPlazo[i]) + ' ');
+        }
+        l->saltoLinea();
+
+
         //Comprobamos que la mejor solucion de nuestros 10 vecinos es mejor que la global
         if (costeMejorVecindario > costeGlobal) {
+
+            l->escribirEnArchivo("COSTE MEJOR VECINO: " + to_string(costeMejorVecindario) + " ES MEJOR QUE COSTE GLOBAL: " + to_string(costeGlobal));
+
             cout << "Mejora Coste vecindario: " << costeMejorVecindario << " es mejor que Coste Global: " << costeGlobal << endl;
             solGlobal = solMejorVecinos;
             costeGlobal = costeMejorVecindario;
+
+            l->escribirEnArchivo("ACTUALIZAMOS COSTE GLOBAL: " + to_string(costeGlobal));
+
             reinicializacion = 0;
         } else {
             reinicializacion++;
@@ -146,6 +205,7 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
 
 
         if (reinicializacion == numIntentosSinMov) {
+            l->escribirEnArchivo("******************REINICIALIZACION DE LA BUSQUEDA******************");
             //cout << "REINCICIALIZACION DE LA BUSQUEDA" << endl;
             reinicializacion = 0;
             float num = Randfloat(0, 1);
@@ -159,6 +219,12 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                 MLPlazo[i].second = memLargoPlazo[i];
             }
 
+            l->escribirEnArchivo("MEMORIA A LARGO PLAZO (valor i, valorMemLargoPlazo de i): ");
+            for (int i = 0; i < tamM; i++) {
+                l->escribirEnArchivoVector("(" + to_string(MLPlazo[i].first) + ',' + to_string(MLPlazo[i].second) + ") -- ");
+            }
+            l->saltoLinea();
+
             //Ordenamos la memoria a largo plazo de menor a mayor
             pair<int, int> temporal;
             for (int i = 0; i < tamN; i++) {
@@ -171,7 +237,15 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                 }
             }
 
+            l->escribirEnArchivo("MEMORIA A LARGO PLAZO ORDENADA (valor i, valorMemLargoPlazo de i): ");
+            for (int i = 0; i < tamM; i++) {
+                l->escribirEnArchivoVector("(" + to_string(MLPlazo[i].first) + ',' + to_string(MLPlazo[i].second) + ") -- ");
+            }
+            l->saltoLinea();
+
+
             if (num <= probabilidadDivInt) {
+                l->escribirEnArchivo("DIVERSIFICACION -> probabilidad: " + to_string(num));
                 //cout << "Diversificamos" << endl;
                 for (int i = 0; i < tamM; i++) {
                     solActual[i] = MLPlazo[i].first;
@@ -180,6 +254,7 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                 costeActual = Faux.coste(distancias, tamM, solActual);
 
             } else {
+                l->escribirEnArchivo("INTENSIFICACION -> probabilidad: " + to_string(num));
                 //cout << "Intensificamos" << endl;
                 int tam = tamM;
                 for (int i = 0; i < tamM; i++) {
@@ -188,45 +263,38 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                 }
                 costeActual = Faux.coste(distancias, tamM, solActual);
             }
+
+            l->escribirEnArchivo("SOLUCION ACTUAL PASA A SER: ");
+            for (int i = 0; i < tamM; i++) {
+                l->escribirEnArchivoVector(to_string(solActual[i]) + ' ');
+            }
+            l->saltoLinea();
         }
     }//While
 
+
+    l->escribirEnArchivo("MEJOR SOLUCION BUSQUEDA TABU: ");
+    for (int j = 0; j < tamM; j++) {
+        l->escribirEnArchivoVector(to_string(solGlobal[j]) + ' ');
+    }
+    
+    l->escribirEnArchivo("COSTE MEJOR SOLUCION BUSQUEDA TABU: "+to_string(costeGlobal));
     return solGlobal;
 
 }
 
 void BusquedaTabu::solucionInicialAleatoria() {
-    Greedy g(tamN, tamM, distancias,l);
+    Greedy g(tamN, tamM, distancias, l);
     solActual = g.algoritmoGreedy();
     solMejorVecinos = solActual;
     solGlobal = solActual;
 
-    //
-    //    vAntiguo = solActual;
-    //    vNuevo = solActual;
-
-    //noSeleccionados = g.noSeleccionados();
-    //    for (int i = 0; i < tamM; i++) {
-    //        noSeleccionados[solActual[i]] = true;
-    //    }
-
-    //    for (int i = 0; i < tamN; i++) {
-    //        cout << noSeleccionados[i] << ' ';
-    //    }
-    //    cout << endl;
-
     costeActual = Faux.coste(distancias, tamM, solActual);
     costeGlobal = costeActual;
-    //costeMomento = Faux.coste(distancias, tamM, solMomento);
+
 }
 
 void BusquedaTabu::rellena() {
-    //    vAntiguo = solActual;
-    //    vNuevo = solActual;
-    //    noSeleccionados.resize(tamN, false);
-    //    for (int i = 0; i < tamM; i++) {
-    //        noSeleccionados[solActual[i]] = true;
-    //    }
     for (int i = 0; i < tamM; i++) {
         vDistancia[i].first = solActual[i];
         vDistancia[i].second = calculaD(solActual[i]);
@@ -269,10 +337,6 @@ void BusquedaTabu::ordenaSolActual() {
     for (int i = 0; i < tamM; i++) {
         solActual[i] = vDistancia[i].first;
     }
-    //    vAntiguo = solActual;
-    //    vNuevo = solActual;
-    //solMejorVecinos = solActual;
-    //solGlobal = solActual; 
 }
 
 void BusquedaTabu::cambiarValor(int pos, int valor) {
@@ -298,15 +362,4 @@ float BusquedaTabu::calculoAporte(vector<int> v) {
         aporte += consultaMatriz(v[i], v[posIntercambio]);
     }
     return aporte;
-}
-
-void BusquedaTabu::mejorar(float diferencia) {
-    //mejora = true;
-    vAntiguo = vNuevo;
-    //solActual = vNuevo;
-    //costeActual += diferencia;
-    solMejorVecinos = vNuevo;
-    costeMejorVecindario += diferencia;
-
-    posIntercambio = 0;
 }
