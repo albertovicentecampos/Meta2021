@@ -17,37 +17,40 @@
 #include <vector>
 #include "FuncionesAux.h"
 #include "random.h"
+#include "Log.h"
 
-using namespace std; 
+using namespace std;
 
 class Greedy {
 public:
-    Greedy(int n, int m, vector<vector<float>> d);
+    Greedy(int n, int m, vector<vector<float>> d, Log* log);
     vector<int> algoritmoGreedy();
-    
+
     void calculoDistancias(int i);
     void mayorDistancia();
     vector<bool> noSeleccionados();
-    
-//    void maxDistancia();
-//    void calcularDistancia();
-    
+
+    //    void maxDistancia();
+    //    void calcularDistancia();
+
 private:
     int tamM;
-    int tamN;   
+    int tamN;
     int primerElemento;
-    float maxValor; 
+    float maxValor;
     int numPos;
-    
+
     vector<float> vDistancia;
     vector<vector<float>> distancias;
+    vector<pair<int, float>> distMayor;
     vector<int> seleccionadosM;
-    
+
     vector<bool> marcados;
-    
+
     vector<int> vN;
-    
-    FuncionesAux aux; 
+
+    FuncionesAux aux;
+    Log *l;
 };
 
 #endif /* GREEDY_H */

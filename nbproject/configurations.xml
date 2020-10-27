@@ -8,7 +8,9 @@
       <itemPath>BusquedaTabu.h</itemPath>
       <itemPath>FuncionesAux.h</itemPath>
       <itemPath>Greedy.h</itemPath>
+      <itemPath>Log.h</itemPath>
       <itemPath>random.h</itemPath>
+      <itemPath>timer.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
@@ -21,8 +23,10 @@
       <itemPath>BusquedaTabu.cpp</itemPath>
       <itemPath>FuncionesAux.cpp</itemPath>
       <itemPath>Greedy.cpp</itemPath>
+      <itemPath>Log.cpp</itemPath>
       <itemPath>main.cpp</itemPath>
       <itemPath>random.cpp</itemPath>
+      <itemPath>timer.cpp</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -62,11 +66,19 @@
       </item>
       <item path="Greedy.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Log.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Log.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="random.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="random.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="timer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="timer.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
     <conf name="Release" type="1">
@@ -105,11 +117,19 @@
       </item>
       <item path="Greedy.h" ex="false" tool="3" flavor2="0">
       </item>
+      <item path="Log.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="Log.h" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="random.cpp" ex="false" tool="1" flavor2="0">
       </item>
       <item path="random.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="timer.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="timer.h" ex="false" tool="3" flavor2="0">
       </item>
     </conf>
   </confs>

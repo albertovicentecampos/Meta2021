@@ -13,7 +13,7 @@
 
 #include "BusquedaTabu.h"
 
-BusquedaTabu::BusquedaTabu(int n, int m, vector<vector<float>> d, int ten, int tamV, int numEval, int numIntSinMov, float probDivInt) :
+BusquedaTabu::BusquedaTabu(int n, int m, vector<vector<float>> d, int ten, int tamV, int numEval, int numIntSinMov, float probDivInt, Log *log) :
 tamN(n),
 tamM(m),
 distancias(d),
@@ -26,7 +26,8 @@ numEvaluaciones(numEval),
 posIntercambio(0),
 numIntentosSinMov(numIntSinMov),
 probabilidadDivInt(probDivInt),
-costeActualNuevo(0.0) {
+costeActualNuevo(0.0),
+l(log) {
 
     vDistancia.reserve(tamM);
 
@@ -143,7 +144,7 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
         costeActual = costeMejorVecindario;
         costeMejorVecindario = 0;
 
-        
+
         if (reinicializacion == numIntentosSinMov) {
             //cout << "REINCICIALIZACION DE LA BUSQUEDA" << endl;
             reinicializacion = 0;
@@ -174,7 +175,7 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
                 //cout << "Diversificamos" << endl;
                 for (int i = 0; i < tamM; i++) {
                     solActual[i] = MLPlazo[i].first;
-                    
+
                 }
                 costeActual = Faux.coste(distancias, tamM, solActual);
 
@@ -195,7 +196,7 @@ vector<int> BusquedaTabu::algoritmoBusquedaTabu() {
 }
 
 void BusquedaTabu::solucionInicialAleatoria() {
-    Greedy g(tamN, tamM, distancias);
+    Greedy g(tamN, tamM, distancias,l);
     solActual = g.algoritmoGreedy();
     solMejorVecinos = solActual;
     solGlobal = solActual;

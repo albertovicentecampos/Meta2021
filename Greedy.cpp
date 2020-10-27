@@ -13,16 +13,18 @@
 
 #include "Greedy.h"
 
-Greedy::Greedy(int n, int m, vector<vector<float>> d) :
+Greedy::Greedy(int n, int m, vector<vector<float>> d, Log* log) :
 tamN(n),
 tamM(m),
 distancias(d),
 maxValor(0.0),
 numPos(0),
-primerElemento(0) {
+primerElemento(0),
+l(log){
     vDistancia.resize(tamN, 0);
     vN.resize(tamN, 0);
     marcados.resize(tamN, false);
+    distMayor.reserve(tamN);
 }
 
 vector<int> Greedy::algoritmoGreedy() {
@@ -31,8 +33,15 @@ vector<int> Greedy::algoritmoGreedy() {
     seleccionadosM.push_back(primerElemento);
     marcados[primerElemento] = true;
 
+
     //Calculamos el vector de distancias
     for (int i = 0; i < tamM; i++) {
+        l->escribirEnArchivo("*CALCULAMOS SELECCIONADOS: ");
+        for (int j = 0; j < tamM; j++) {
+            l->escribirEnArchivoVector(to_string(seleccionadosM[j]) + ' ');
+        }
+        l->saltoLinea();
+
         calculoDistancias(seleccionadosM[i]);
         //Seleccionamos el mayor del momento
         mayorDistancia();
@@ -41,9 +50,10 @@ vector<int> Greedy::algoritmoGreedy() {
 }
 
 void Greedy::calculoDistancias(int i) {
+
     for (int j = 0; j < tamN; j++) {
         if (i < j) {
-            vDistancia[j] += distancias[i][j]; 
+            vDistancia[j] += distancias[i][j];
         } else {
             vDistancia[j] += distancias[j][i];
         }
@@ -51,22 +61,37 @@ void Greedy::calculoDistancias(int i) {
 }
 
 void Greedy::mayorDistancia() {
-    maxValor = 0;
     for (int i = 0; i < tamN; i++) {
-        bool existe = false;
-        if (vDistancia[i] > maxValor) {
-            //Comprobamos si está ya elegido
-            if (marcados[i] == false) {
-                maxValor = vDistancia[i];
-                numPos = i; 
-                marcados[i] = true; 
-                seleccionadosM.push_back(i);
-            }
+        distMayor[i].first = i;
+        distMayor[i].second = vDistancia[i];
+    }
 
+
+    pair<int, float> temporal;
+    for (int i = 0; i < tamN; i++) {
+        for (int j = i + 1; j < tamN; j++) {
+            if (distMayor[i].second < distMayor[j].second) {
+                temporal = distMayor[i];
+                distMayor[i] = distMayor[j];
+                distMayor[j] = temporal;
+            }
+        }
+    }
+
+    
+    for (int i = 0; i < tamN; i++) {
+        if (marcados[distMayor[i].first] == false) {
+            l->escribirEnArchivo("Elemento: " + to_string(distMayor[i].first) + " con un valor de " + to_string(distMayor[i].second));
+            l->saltoLinea();
+            marcados[distMayor[i].first] = true;
+            l->escribirEnArchivo("Seleccionamos el elemento " + to_string(distMayor[i].first));
+            l->saltoLinea();
+            seleccionadosM.push_back(distMayor[i].first);
+            break;
         }
     }
 }
 
-vector<bool> Greedy::noSeleccionados(){
-    return marcados; 
+vector<bool> Greedy::noSeleccionados() {
+    return marcados;
 }

@@ -24,7 +24,7 @@ using namespace std;
 
 class BusquedaTabu {
 public:
-    BusquedaTabu(int n, int m, vector<vector<float>> d, int ten, int tamV, int numEval, int numIntSinMov, float probDivInt);
+    BusquedaTabu(int n, int m, vector<vector<float>> d, int ten, int tamV, int numEval, int numIntSinMov, float probDivInt, Log *log);
     vector<int> algoritmoBusquedaTabu();
     void solucionInicialAleatoria();
     void rellena();
@@ -73,6 +73,7 @@ private:
     
     float costeActualNuevo;
     float probabilidadDivInt; 
+    Log *l;
 };
 
 #endif /* BUSQUEDATABU_H */

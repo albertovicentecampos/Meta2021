@@ -39,8 +39,10 @@ OBJECTFILES= \
 	${OBJECTDIR}/BusquedaTabu.o \
 	${OBJECTDIR}/FuncionesAux.o \
 	${OBJECTDIR}/Greedy.o \
+	${OBJECTDIR}/Log.o \
 	${OBJECTDIR}/main.o \
-	${OBJECTDIR}/random.o
+	${OBJECTDIR}/random.o \
+	${OBJECTDIR}/timer.o
 
 
 # C Compiler Flags
@@ -87,6 +89,11 @@ ${OBJECTDIR}/Greedy.o: Greedy.cpp
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Greedy.o Greedy.cpp
 
+${OBJECTDIR}/Log.o: Log.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/Log.o Log.cpp
+
 ${OBJECTDIR}/main.o: main.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
@@ -96,6 +103,11 @@ ${OBJECTDIR}/random.o: random.cpp
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} "$@.d"
 	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/random.o random.cpp
+
+${OBJECTDIR}/timer.o: timer.cpp
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} "$@.d"
+	$(COMPILE.cc) -O2 -MMD -MP -MF "$@.d" -o ${OBJECTDIR}/timer.o timer.cpp
 
 # Subprojects
 .build-subprojects:

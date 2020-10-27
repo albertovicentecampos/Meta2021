@@ -17,13 +17,14 @@
 #include <vector>
 #include "FuncionesAux.h"
 #include "Greedy.h"
+#include "Log.h"
 #include <utility>
 
 using namespace std;
 
 class BusquedaLocal {
 public:
-    BusquedaLocal(int n, int m, vector<vector<float>> d, int nEvaluaciones);
+    BusquedaLocal(int n, int m, vector<vector<float>> d, int nEvaluaciones, Log *log);
     
     vector<int> algoritmoBusquedaLocal();
     
@@ -54,6 +55,7 @@ private:
     float diferencia;
     int posIntercambio;
     FuncionesAux Faux;
+    Log *l; 
 
 };
 

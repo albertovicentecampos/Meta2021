@@ -14,7 +14,7 @@
 // archivos: GKD-c_1_n500_m50.txt GKD-c_2_n500_m50.txt GKD-c_3_n500_m50.txt MDG-a_21_n2000_m200.txt MDG-a_22_n2000_m200.txt MDG-a_23_n2000_m200.txt SOM-b_11_n300_m90.txt SOM-b_12_n300_m120.txt SOM-b_13_n400_m40.txt
 #include "BusquedaLocal.h"
 
-BusquedaLocal::BusquedaLocal(int n, int m, vector<vector<float>> d, int nEvaluaciones) :
+BusquedaLocal::BusquedaLocal(int n, int m, vector<vector<float>> d, int nEvaluaciones, Log *log) :
 tamN(n),
 tamM(m),
 distancias(d),
@@ -23,7 +23,9 @@ iter(0),
 costeActual(0),
 mejora(false),
 diferencia(0.0),
-posIntercambio(0) {
+posIntercambio(0),
+l(log)
+{
     solActual.resize(tamM, 0);
     vAntiguo.resize(tamM, 0);
     vNuevo.resize(tamM, 0);
@@ -76,7 +78,7 @@ vector<int> BusquedaLocal::algoritmoBusquedaLocal() {
 void BusquedaLocal::solucionInicialAleatoria() {
 
     //Solucion inicial por Greedy
-    Greedy g(tamN, tamM, distancias);
+    Greedy g(tamN, tamM, distancias,l);
     solActual = g.algoritmoGreedy();
     vAntiguo = solActual;
     vNuevo = solActual;
